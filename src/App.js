@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import styled from '@emotion/styled';
+import { v4 as uuidv4 } from 'uuid';
 
 // mui
 import AppBar from '@mui/material/AppBar';
@@ -20,9 +21,9 @@ import Table from './components/Table'
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc( 100vh - 64px );
   width: 100vw;
-  margin-top: 64px;
+  padding-top: 64px;
   &.dark-mode {
    // background-color: rgb(13, 23, 34);
     background-color: rgb(30, 30, 30);
@@ -60,8 +61,16 @@ function App() {
   );
 
   const addAddress = (input) => {
-    setAddresses(addresses => [...addresses, input]);
-    localStorage.setItem('addresses', JSON.stringify([...addresses, input]));
+    let temp =  [...addresses, {uuid: uuidv4(), ...input}]
+    setAddresses(temp);
+    localStorage.setItem('addresses', JSON.stringify(temp));
+  };
+
+  const removeAddress = (uuid) => {
+    let temp = JSON.parse(JSON.stringify(addresses)); //fastest way of copyinh an Array
+    temp = temp.filter( (item) => item.uuid !== uuid);
+    setAddresses(temp);
+    localStorage.setItem('addresses', JSON.stringify(temp));
   };
 
   return (
@@ -84,6 +93,7 @@ function App() {
         </AppBar>
         <Table
           addresses={addresses}
+          removeAddress={removeAddress}
         />
         <AddressInput/>
       </AppContainer>
