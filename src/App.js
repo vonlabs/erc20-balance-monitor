@@ -112,6 +112,7 @@ function App() {
           <SToolbar>
             <AddAddress
               add={addAddress}
+              addresses={addresses}
             />
             <IconButton 
               onClick={colorMode.toggleColorMode} 

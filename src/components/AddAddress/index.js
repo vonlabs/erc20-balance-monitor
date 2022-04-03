@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 
 // Mui Icons
 import AddIcon from '@mui/icons-material/Add';
@@ -45,25 +46,46 @@ const SMenuItemContainer = styled.div`
 
 function AddressInput(props) {
   const [open, setOpen] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [web3Validated, setWeb3Validated] = useState(false);
+  const [duplicateValidated, setDuplicateValidated] = useState(false);
   const [coin, setCoin] = useState('LINK');
   const [address, setAddress] = useState('');
 
   const handleClose = () => {
     setAddress('');
-    setValidated(false);
+    setWeb3Validated(false);
+    setDuplicateValidated(false);
     setOpen(false);
   };
 
 
   const handleCoinChange = (event) => {
     setCoin(event.target.value);
+    duplicateValidate(event.target.value, address)
   };
 
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
-    setValidated(Web3.utils.isAddress(event.target.value))
+    setWeb3Validated(Web3.utils.isAddress(event.target.value));
+    duplicateValidate(coin, event.target.value)
   };
+
+  const duplicateValidate = (coin, address) => {
+    if(props.addresses.findIndex(elem => elem.address === address && elem.coin === coin) === -1 ) {
+      setDuplicateValidated(true);
+    } else {
+      setDuplicateValidated(false);
+    }
+  };
+
+  const addHelperText = () => {
+    if (!web3Validated) {
+      return "Token not valid"
+    } else if (!duplicateValidated) {
+      return "Duplicate token already added"
+    }
+    return null
+  } 
 
   return (
     <div className="AddressInput">
@@ -116,17 +138,25 @@ function AddressInput(props) {
           >
             Close
           </Button>
-          <Button 
-            autoFocus
-            onClick={()=>{
-              props.add({coin, address})
-              setOpen(false)
-            }}
-            startIcon={<AddIcon/>}
-            disabled={!validated}
-          >
-            Add
-          </Button>
+          <Tooltip 
+              title={
+                !web3Validated ? "Token not valid" : (!duplicateValidated ? "Duplicate token already added" : "")
+              }
+            >
+              <span>
+                <Button 
+                  autoFocus
+                  onClick={()=>{
+                    props.add({coin, address})
+                    setOpen(false)
+                  }}
+                  startIcon={<AddIcon/>}
+                  disabled={!web3Validated || !duplicateValidated}
+                >
+                  Add
+                </Button>
+              </span>
+            </Tooltip>
         </DialogActions>
       </SDialog>
     </div>
