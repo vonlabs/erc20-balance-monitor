@@ -33,8 +33,11 @@ const SToolbar = styled(Toolbar)`
   justify-content: space-between;
 `
 
+const getFromLocalStorage = localStorage.addresses ? JSON.parse(localStorage.addresses) : [];
+
 function App() {
-  const [addresses, setAddresses] = useState([]);
+
+  const [addresses, setAddresses] = useState(getFromLocalStorage);
   const [mode, setMode] = useState('dark');
 
   const colorMode = useMemo(
@@ -58,6 +61,7 @@ function App() {
 
   const addAddress = (input) => {
     setAddresses(addresses => [...addresses, input]);
+    localStorage.setItem('addresses', JSON.stringify([...addresses, input]));
   };
 
   return (
