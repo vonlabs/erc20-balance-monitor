@@ -1,9 +1,78 @@
+import React, { useState } from 'react';
 
+// Mui
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+
+// Web3
+import ERC20ABI from '../../shared/abi-erc20.json'
+const Web3 = require("web3");
+const provider = "https://mainnet.infura.io/v3/0c6a0e35edd84dc5bfdf28dd93e263d1";
+const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 
 function AddressInput() {
+  const [open, setOpen] = useState(false);
+
+  async function connect_eth() {
+    const address_ETH = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1' //ETH
+    // 0x514910771af9ca656af840dff83e8264ecf986ca Link
+
+    try {
+      window.web3.eth.getBalance(address_ETH, function (error, wei) {
+        if (!error) {
+            var balance = window.web3.utils.fromWei(wei, 'ether');
+            console.log('balance', balance)
+        }
+      });
+    } catch (err) {
+      console.warn('balance', err)
+    }
+  }
+
+  async function connect2_bat() {
+    const contractAddress_BAT = '0x0d8775f648430679a709e98d2b0cb6250d2887ef';
+    const contractAddress_Tether = '0xdac17f958d2ee523a2206206994597c13d831ec7'
+    const walletAddress_BAT = '0x7bc027cfe825dfbcca64d2cef63c61f1a689ef98'
+
+    const contract = new Web3Client.eth.Contract(ERC20ABI, contractAddress_BAT);
+
+    async function getBalance() {
+      const result = await contract.methods.balanceOf(walletAddress_BAT).call();
+      const format = Web3Client.utils.fromWei(result);
+      console.log(result, format);
+    }
+
+    getBalance();
+  }
+
+
   return (
     <div className="AddressInput">
+      <Button
+        variant="outlined"
+        onClick={()=>{
+     //     setOpen(!open);
+          connect_eth();
+        }}
+      >
+        ETH
+      </Button>
+      <Button
+        variant="outlined"
+        onClick={()=>{
+          connect2_bat();
+        }}
+      >
+        USDT 
+      </Button>
 
+      <Dialog 
+        onClose={()=>{setOpen(false)}} 
+        open={open}
+      >
+        <DialogTitle>Input Addresses</DialogTitle>
+      </Dialog>
     </div>
   );
 }
