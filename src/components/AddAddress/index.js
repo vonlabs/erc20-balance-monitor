@@ -64,7 +64,7 @@ function AddressInput(props) {
         open={open}
         fullWidth
       >
-        <DialogTitle>Input Addresses</DialogTitle>
+        <DialogTitle>Input Address</DialogTitle>
         <SDialogContent>
           <FormControl fullWidth>
             <InputLabel id="coin-select-label">Coin</InputLabel>
