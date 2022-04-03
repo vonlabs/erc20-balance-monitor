@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -38,6 +38,7 @@ const SToolbar = styled(Toolbar)`
 `
 
 const getFromLocalStorage = localStorage.addresses ? JSON.parse(localStorage.addresses) : [];
+const REFRESH_INTERVAL = 20; //secons
 
 function App() {
 
@@ -45,6 +46,22 @@ function App() {
   const [balances, setBalances] = useState({});
   const [mode, setMode] = useState('dark');
 
+  useEffect(() => {
+    async function updateBalances (addresses) {
+      let temp = Object.assign({}, balances, {});
+      for (let i = 0; i < addresses.length; i++){
+        let balance = await getBalance(addresses[i].coin, addresses[i].address);
+        temp[addresses[i].uuid] = balance;
+      }
+      setBalances(temp);
+    };
+
+    updateBalances(addresses);
+    const interval = setInterval(() => {
+      updateBalances(addresses)
+    }, REFRESH_INTERVAL * 1000);
+    return () => clearInterval(interval);
+  }, [addresses]);
 
   const colorMode = useMemo(
     () => ({
@@ -81,8 +98,8 @@ function App() {
   };
 
   async function updateBalance (coin, address, uuid) {
-    let balance = await getBalance(coin, address);
     let temp = Object.assign({}, balances, {});
+    let balance = await getBalance(coin, address);
     temp[uuid] = balance;
     setBalances(temp);
   };
