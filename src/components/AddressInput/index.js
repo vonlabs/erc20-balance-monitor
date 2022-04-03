@@ -18,12 +18,12 @@ function AddressInput() {
 
   async function connect_eth() {
     const address_ETH = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1' //ETH
-    // 0x514910771af9ca656af840dff83e8264ecf986ca Link
 
     try {
-      window.web3.eth.getBalance(address_ETH, function (error, wei) {
+      Web3Client.eth.getBalance(address_ETH, function (error, wei) {
         if (!error) {
-            var balance = window.web3.utils.fromWei(wei, 'ether');
+            console.log('wei', wei)
+            var balance = Web3Client.utils.fromWei(wei, 'ether');
             console.log('balance', balance)
         }
       });
