@@ -7,8 +7,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 // Web3
 import ERC20ABI from '../../shared/abi-erc20.json'
+import contractAddress from '../../shared/contract-addresses'
+
 const Web3 = require("web3");
-const provider = "https://mainnet.infura.io/v3/0c6a0e35edd84dc5bfdf28dd93e263d1";
+const provider = process.env.REACT_APP_PROVIDER_URL + process.env.REACT_APP_API_KEY
 const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 
 function AddressInput() {
@@ -30,12 +32,10 @@ function AddressInput() {
     }
   }
 
-  async function connect2_bat() {
-    const contractAddress_BAT = '0x0d8775f648430679a709e98d2b0cb6250d2887ef';
-    const contractAddress_Tether = '0xdac17f958d2ee523a2206206994597c13d831ec7'
+  async function connect2_bat() {    
     const walletAddress_BAT = '0x7bc027cfe825dfbcca64d2cef63c61f1a689ef98'
 
-    const contract = new Web3Client.eth.Contract(ERC20ABI, contractAddress_BAT);
+    const contract = new Web3Client.eth.Contract(ERC20ABI, contractAddress.BAT);
 
     async function getBalance() {
       const result = await contract.methods.balanceOf(walletAddress_BAT).call();

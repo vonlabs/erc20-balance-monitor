@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 
 const Web3 = require('web3');
-const provider = "https://mainnet.infura.io/v3/0c6a0e35edd84dc5bfdf28dd93e263d1";
+const provider = process.env.REACT_APP_PROVIDER_URL + process.env.REACT_APP_API_KEY
 
 const AppContainer = styled.div`
   height: 100vh;
