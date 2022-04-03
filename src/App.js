@@ -14,15 +14,15 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 //custom
 import AddAddress from './components/AddAddress'
 import AddressInput from './components/AddressInput'
+import Table from './components/Table'
 
 
 const AppContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  margin-top: 64px;
   &.dark-mode {
    // background-color: rgb(13, 23, 34);
     background-color: rgb(30, 30, 30);
@@ -35,8 +35,8 @@ const SToolbar = styled(Toolbar)`
 
 function App() {
   const [addresses, setAddresses] = useState([]);
-
   const [mode, setMode] = useState('dark');
+
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -57,10 +57,7 @@ function App() {
   );
 
   const addAddress = (input) => {
-    console.log('input', input)
-    let temp = addresses;
-    temp.push(input);
-    setAddresses(temp)
+    setAddresses(addresses => [...addresses, input]);
   };
 
   return (
@@ -81,6 +78,9 @@ function App() {
             </IconButton>
           </SToolbar>
         </AppBar>
+        <Table
+          addresses={addresses}
+        />
         <AddressInput/>
       </AppContainer>
     </ThemeProvider>
