@@ -14,7 +14,6 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
 // custom
 import AddAddress from './components/AddAddress'
-import AddressInput from './components/AddressInput'
 import Table from './components/Table'
 
 // shared
@@ -61,7 +60,7 @@ function App() {
       updateBalances(addresses)
     }, REFRESH_INTERVAL * 1000);
     return () => clearInterval(interval);
-  }, [addresses]);
+  }, [addresses, balances]);
 
   const colorMode = useMemo(
     () => ({
@@ -127,7 +126,6 @@ function App() {
           balances={balances}
           removeAddress={removeAddress}
         />
-        <AddressInput/>
       </AppContainer>
     </ThemeProvider>
   );

@@ -12,20 +12,28 @@ const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
 //TODO: Add Error Hadling
 async function getBalance(coin, address) {
   async function get_eth() {
-    let wei = await Web3Client.eth.getBalance(address);
-    let balance = Web3Client.utils.fromWei(wei, 'ether');
-    return balance;
+    try {
+      let wei = await Web3Client.eth.getBalance(address);
+      let balance = Web3Client.utils.fromWei(wei, 'ether');
+      return balance;
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   async function get_erc20() {    
-    const contract = new Web3Client.eth.Contract(ERC20ABI, contractAddress[coin]);
-    const result = await contract.methods.balanceOf(address).call();
-    const formated = Web3Client.utils.fromWei(result);
-    return formated;
+    try {
+      const contract = new Web3Client.eth.Contract(ERC20ABI, contractAddress[coin]);
+      const result = await contract.methods.balanceOf(address).call();
+      const formated = Web3Client.utils.fromWei(result);
+      return formated;
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   if(coin === 'ETH') {
-   return await get_eth();
+    return await get_eth();
   } else {
     return await get_erc20();
   }

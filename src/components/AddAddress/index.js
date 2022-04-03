@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import Web3 from 'web3'
 
 // Mui
 import Button from '@mui/material/Button';
@@ -17,6 +18,10 @@ import TextField from '@mui/material/TextField';
 // Mui Icons
 import AddIcon from '@mui/icons-material/Add';
 
+// custom
+import { CryptoIcon } from '../CryptoCoin';
+
+
 const SButton = styled(Button)`
 `
 
@@ -29,13 +34,26 @@ const STextField = styled(TextField)`
 
 const SDialogContent = styled(DialogContent)`
   overflow: initial;
+  .MuiSelect-select.MuiSelect-outlined.MuiOutlinedInput-input.MuiInputBase-input {
+    height: 23px;
+  }
 `
 
+const SMenuItemContainer = styled.div`
+  display: inline-flex;
+`
 
 function AddressInput(props) {
   const [open, setOpen] = useState(false);
+  const [validated, setValidated] = useState(false);
   const [coin, setCoin] = useState('LINK');
   const [address, setAddress] = useState('');
+
+  const handleClose = () => {
+    setAddress('');
+    setValidated(false);
+    setOpen(false);
+  };
 
 
   const handleCoinChange = (event) => {
@@ -44,6 +62,7 @@ function AddressInput(props) {
 
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
+    setValidated(Web3.utils.isAddress(event.target.value))
   };
 
   return (
@@ -60,7 +79,7 @@ function AddressInput(props) {
       </SButton>
 
       <SDialog 
-        onClose={()=>{setOpen(false)}} 
+        onClose={handleClose} 
         open={open}
         fullWidth
       >
@@ -75,10 +94,10 @@ function AddressInput(props) {
               label="Coin"
               onChange={handleCoinChange}
             >
-              <MenuItem value={'LINK'}>ChainLink Token (LINK)</MenuItem>
-              <MenuItem value={'USDT'}>Tether USD (USDT)</MenuItem>
-              <MenuItem value={'DAI'}>Dai Stablecoin (DAI)</MenuItem>
-              <MenuItem value={'ETH'}>Ethereum (ETH)</MenuItem>
+              <MenuItem value={'LINK'}><SMenuItemContainer><CryptoIcon className="LINK"/>ChainLink Token (LINK)</SMenuItemContainer></MenuItem>
+              <MenuItem value={'USDT'}><SMenuItemContainer><CryptoIcon className="USDT"/>Tether USD (USDT)</SMenuItemContainer></MenuItem>
+              <MenuItem value={'DAI'}><SMenuItemContainer><CryptoIcon className="DAI"/>Dai Stablecoin (DAI)</SMenuItemContainer></MenuItem>
+              <MenuItem value={'ETH'}><SMenuItemContainer><CryptoIcon className="ETH"/>Ethereum (ETH)</SMenuItemContainer></MenuItem>
             </Select>
           </FormControl>
           <STextField 
@@ -93,7 +112,7 @@ function AddressInput(props) {
         <DialogActions>
           <Button 
             autoFocus
-            onClick={()=>{setOpen(false)}}
+            onClick={handleClose}
           >
             Close
           </Button>
@@ -104,7 +123,7 @@ function AddressInput(props) {
               setOpen(false)
             }}
             startIcon={<AddIcon/>}
-            disabled={address.length === 0}
+            disabled={!validated}
           >
             Add
           </Button>

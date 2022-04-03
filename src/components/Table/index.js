@@ -13,12 +13,24 @@ import IconButton from '@mui/material/IconButton';
 // mui icons
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+// custom
+import { CryptoIcon } from '../CryptoCoin';
+
 const STableContainer = styled(TableContainer)`
+  .MuiTableCell-root {
+ //   height: 20px;
+  }
   .bold {
     font-weight: 700;
   }
   .coin {
     width: 68px;
+  }
+  .coin-cell-content{
+    display: inline-flex;
+  }
+  .address {
+    width: 468px;
   }
   .remove-btn-cell {
     padding: 4px 16px;
@@ -36,7 +48,7 @@ export default function CoinTable(props) {
         <TableHead>
           <TableRow>
             <TableCell className='bold coin'>Coin</TableCell>
-            <TableCell className='bold'>Address</TableCell>
+            <TableCell className='bold address'>Address</TableCell>
             <TableCell className='bold'>Balance</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -48,7 +60,9 @@ export default function CoinTable(props) {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.coin}
+                <div className="coin-cell-content">
+                  <CryptoIcon className={row.coin}/> {row.coin}
+                </div>
               </TableCell>
               <TableCell>{row.address}</TableCell>
               <TableCell>
