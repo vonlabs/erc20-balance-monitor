@@ -51,7 +51,9 @@ export default function CoinTable(props) {
                 {row.coin}
               </TableCell>
               <TableCell>{row.address}</TableCell>
-              <TableCell></TableCell>
+              <TableCell>
+                {props.balances[row.uuid]}
+              </TableCell>
               <TableCell 
                 align="right"
                 className="remove-btn-cell"

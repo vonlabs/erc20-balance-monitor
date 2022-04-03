@@ -12,10 +12,13 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
-//custom
+// custom
 import AddAddress from './components/AddAddress'
 import AddressInput from './components/AddressInput'
 import Table from './components/Table'
+
+// shared
+import getBalance from './shared/getBalance';
 
 
 const AppContainer = styled.div`
@@ -39,7 +42,9 @@ const getFromLocalStorage = localStorage.addresses ? JSON.parse(localStorage.add
 function App() {
 
   const [addresses, setAddresses] = useState(getFromLocalStorage);
+  const [balances, setBalances] = useState({});
   const [mode, setMode] = useState('dark');
+
 
   const colorMode = useMemo(
     () => ({
@@ -61,9 +66,11 @@ function App() {
   );
 
   const addAddress = (input) => {
-    let temp =  [...addresses, {uuid: uuidv4(), ...input}]
+    let uuid = uuidv4();
+    let temp =  [...addresses, {uuid, ...input}]
     setAddresses(temp);
     localStorage.setItem('addresses', JSON.stringify(temp));
+    updateBalance(input.coin, input.address, uuid);
   };
 
   const removeAddress = (uuid) => {
@@ -71,6 +78,13 @@ function App() {
     temp = temp.filter( (item) => item.uuid !== uuid);
     setAddresses(temp);
     localStorage.setItem('addresses', JSON.stringify(temp));
+  };
+
+  async function updateBalance (coin, address, uuid) {
+    let balance = await getBalance(coin, address);
+    let temp = Object.assign({}, balances, {});
+    temp[uuid] = balance;
+    setBalances(temp);
   };
 
   return (
@@ -93,6 +107,7 @@ function App() {
         </AppBar>
         <Table
           addresses={addresses}
+          balances={balances}
           removeAddress={removeAddress}
         />
         <AddressInput/>

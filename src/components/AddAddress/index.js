@@ -78,6 +78,7 @@ function AddressInput(props) {
               <MenuItem value={'LINK'}>ChainLink Token (LINK)</MenuItem>
               <MenuItem value={'USDT'}>Tether USD (USDT)</MenuItem>
               <MenuItem value={'DAI'}>Dai Stablecoin (DAI)</MenuItem>
+              <MenuItem value={'ETH'}>Ethereum (ETH)</MenuItem>
             </Select>
           </FormControl>
           <STextField 
