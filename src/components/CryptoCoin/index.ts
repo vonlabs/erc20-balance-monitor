@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const CryptoIcon = styled.div`
   width: 30px;
@@ -6,15 +6,15 @@ export const CryptoIcon = styled.div`
   background-repeat: no-repeat;
   background-size: contain;
   &.ETH {
-    background-image: url('./ethereum.svg');
+    background-image: url("./ethereum.svg");
   }
   &.LINK {
-    background-image: url('./chainlinktoken_32.webp');
+    background-image: url("./chainlinktoken_32.webp");
   }
   &.USDT {
-    background-image: url('./tether_32.webp');
+    background-image: url("./tether_32.webp");
   }
   &.DAI {
-    background-image: url('./MCDDai_32.webp');
+    background-image: url("./MCDDai_32.webp");
   }
-`
+`;
