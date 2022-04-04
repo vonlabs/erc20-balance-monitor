@@ -144,7 +144,11 @@ function App(): JSX.Element {
         <AppBar>
           <SToolbar>
             <AddAddress add={addAddress} addresses={addresses} />
-            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+            <IconButton 
+              id="theme-change-btn"
+              onClick={colorMode.toggleColorMode} 
+              color="inherit"
+            >
               {themeMui.palette.mode === "dark" ? (
                 <WbSunnyIcon />
               ) : (
