@@ -24,6 +24,14 @@ import { CryptoIcon } from "../CryptoCoin";
 // types
 import { Address, Coin, isCoin, AddressObj, NewAddressObj } from "../../types";
 
+const SButton = styled(Button)`
+  @media (max-width: 250px) {
+    .mobile-hide {
+      display: none;
+    }
+  }
+`;
+
 const STextField = styled(TextField)`
   margin-top: 16px;
 `;
@@ -89,7 +97,7 @@ function AddAddress(props: Props): JSX.Element {
 
   return (
     <div className="AddressInput">
-      <Button
+      <SButton
         color="inherit"
         variant="outlined"
         onClick={() => {
@@ -97,8 +105,8 @@ function AddAddress(props: Props): JSX.Element {
         }}
         startIcon={<AddIcon />}
       >
-        Add Address
-      </Button>
+        <span className="mobile-hide">Add&nbsp;</span>Address
+      </SButton>
 
       <Dialog onClose={handleClose} open={open} fullWidth>
         <DialogTitle>Input Address</DialogTitle>

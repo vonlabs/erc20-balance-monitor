@@ -34,6 +34,37 @@ const STableContainer = styled(TableContainer)`
   .remove-btn-cell {
     padding: 4px 16px;
   }
+  .mobile-label {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    thead.MuiTableHead-root {
+      display: none;
+    }
+    .MuiTableBody-root .MuiTableRow-root {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid var(--divider);
+    }
+    .MuiTableCell-root {
+      border-bottom: unset;
+      padding: 8px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: block;
+    }
+    .MuiTableCell-root:not(.remove-btn-cell){
+      width: 80vw;
+    }
+    .mobile-label {
+      display: block;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .balance-cell{
+      display: flex;
+    } 
+  }
 `;
 
 const SIconButton = styled(IconButton)`
@@ -70,7 +101,10 @@ export default function CoinTable(props: Props): JSX.Element {
                 </div>
               </TableCell>
               <TableCell>{row.address}</TableCell>
-              <TableCell>{props.balances[row.uuid]}</TableCell>
+              <TableCell className="balance-cell">
+                <span className="mobile-label">Balance: </span>
+                {props.balances[row.uuid]}
+              </TableCell>
               <TableCell align="right" className="remove-btn-cell">
                 <SIconButton
                   aria-label="remove address"

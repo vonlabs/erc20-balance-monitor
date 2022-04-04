@@ -35,9 +35,12 @@ const AppContainer = styled.div`
   flex-direction: column;
   height: calc(100vh - 64px);
   width: 100vw;
+  min-width: 244px;
   padding-top: 64px;
+  --divider: rgba(224, 224, 224, 1);
   &.dark-mode {
     background-color: rgb(30, 30, 30);
+    --divider: rgba(81, 81, 81, 1);
   }
 `;
 
@@ -79,7 +82,8 @@ function App(): JSX.Element {
       updateBalances(addresses);
     }, REFRESH_INTERVAL * 1000);
     return () => clearInterval(interval);
-  }, [addresses, balances]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const colorMode = useMemo(
     () => ({
