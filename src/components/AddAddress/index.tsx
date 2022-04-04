@@ -12,7 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -21,6 +21,9 @@ import AddIcon from '@mui/icons-material/Add';
 
 // custom
 import { CryptoIcon } from '../CryptoCoin';
+
+// types
+import { Address, Coin, isCoin, AddressObj, NewAddressObj } from '../../types'
 
 
 const SButton = styled(Button)`
@@ -44,33 +47,41 @@ const SMenuItemContainer = styled.div`
   display: inline-flex;
 `
 
-function AddressInput(props) {
-  const [open, setOpen] = useState(false);
-  const [web3Validated, setWeb3Validated] = useState(false);
-  const [duplicateValidated, setDuplicateValidated] = useState(false);
-  const [coin, setCoin] = useState('LINK');
-  const [address, setAddress] = useState('');
+type Props = {
+  add: (input: NewAddressObj) => void;
+  addresses: AddressObj[]
+}
 
-  const handleClose = () => {
+function AddAddress(props: Props): JSX.Element {
+  const [open, setOpen] = useState<boolean>(false);
+  const [web3Validated, setWeb3Validated] = useState<boolean>(false);
+  const [duplicateValidated, setDuplicateValidated] = useState<boolean>(false);
+  const [coin, setCoin] = useState<Coin>('LINK');
+  const [address, setAddress] = useState<Address>('');
+
+  const handleClose: () => void = () => {
     setAddress('');
     setWeb3Validated(false);
     setDuplicateValidated(false);
     setOpen(false);
   };
 
-
-  const handleCoinChange = (event) => {
-    setCoin(event.target.value);
-    duplicateValidate(event.target.value, address)
+  const handleCoinChange = (event: SelectChangeEvent<Coin>):void => {
+    const value = event?.target?.value;
+    if(isCoin(value)){
+      setCoin(value);
+      duplicateValidate(value, address as Address)
+    }
   };
 
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-    setWeb3Validated(Web3.utils.isAddress(event.target.value));
-    duplicateValidate(coin, event.target.value)
+  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
+    const address = event?.target?.value;
+    setAddress(address);
+    setWeb3Validated(Web3.utils.isAddress(address));
+    duplicateValidate(coin, address);
   };
 
-  const duplicateValidate = (coin, address) => {
+  const duplicateValidate = (coin: Coin, address: Address):void => {
     if(props.addresses.findIndex(elem => elem.address === address && elem.coin === coin) === -1 ) {
       setDuplicateValidated(true);
     } else {
@@ -163,4 +174,4 @@ function AddressInput(props) {
   );
 }
 
-export default AddressInput;
+export default AddAddress;

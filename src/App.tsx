@@ -19,6 +19,9 @@ import Table from './components/Table'
 // shared
 import getBalance from './shared/getBalance';
 
+// types
+import { Address, Coin, Uuid, Mode, AddressObj, NewAddressObj, BalanceObj } from './types'
+
 
 const AppContainer = styled.div`
   display: flex;
@@ -39,15 +42,14 @@ const SToolbar = styled(Toolbar)`
 const getFromLocalStorage = localStorage.addresses ? JSON.parse(localStorage.addresses) : [];
 const REFRESH_INTERVAL = 20; //secons
 
-function App() {
-
-  const [addresses, setAddresses] = useState(getFromLocalStorage);
-  const [balances, setBalances] = useState({});
-  const [mode, setMode] = useState('dark');
+function App(): JSX.Element {
+  const [addresses, setAddresses] = useState<AddressObj[]>(getFromLocalStorage);
+  const [balances, setBalances] = useState<BalanceObj>({});
+  const [mode, setMode] = useState<Mode>('dark');
 
   useEffect(() => {
-    async function updateBalances (addresses) {
-      let temp = Object.assign({}, balances, {});
+    async function updateBalances (addresses: AddressObj[]): Promise<void> {
+      let temp:BalanceObj  = Object.assign({}, balances, {});
       for (let i = 0; i < addresses.length; i++){
         let balance = await getBalance(addresses[i].coin, addresses[i].address);
         temp[addresses[i].uuid] = balance;
@@ -64,7 +66,7 @@ function App() {
 
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: () => {
+      toggleColorMode: ():void => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
     }),
@@ -81,7 +83,7 @@ function App() {
     [mode],
   );
 
-  const addAddress = (input) => {
+  const addAddress = (input: NewAddressObj):void => {
     let uuid = uuidv4();
     let temp =  [...addresses, {uuid, ...input}]
     setAddresses(temp);
@@ -89,14 +91,14 @@ function App() {
     updateBalance(input.coin, input.address, uuid);
   };
 
-  const removeAddress = (uuid) => {
-    let temp = JSON.parse(JSON.stringify(addresses)); //fastest way of copyinh an Array
-    temp = temp.filter( (item) => item.uuid !== uuid);
+  const removeAddress = (uuid: Uuid):void => {
+    let temp = JSON.parse(JSON.stringify(addresses)); //fastest way of copying an Array like this one
+    temp = temp.filter( (item: AddressObj) => item.uuid !== uuid);
     setAddresses(temp);
     localStorage.setItem('addresses', JSON.stringify(temp));
   };
 
-  async function updateBalance (coin, address, uuid) {
+  async function updateBalance (coin: Coin, address: Address, uuid: Uuid): Promise<void> {
     let temp = Object.assign({}, balances, {});
     let balance = await getBalance(coin, address);
     temp[uuid] = balance;

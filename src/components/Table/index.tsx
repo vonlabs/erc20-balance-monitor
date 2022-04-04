@@ -16,6 +16,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // custom
 import { CryptoIcon } from '../CryptoCoin';
 
+// types
+import { Uuid, AddressObj, BalanceObj } from '../../types'
+
 const STableContainer = styled(TableContainer)`
   .MuiTableCell-root {
  //   height: 20px;
@@ -41,9 +44,15 @@ const SIconButton =  styled(IconButton)`
   padding: 8px;
 `
 
-export default function CoinTable(props) {
+type Props = {
+  removeAddress: (uuid: Uuid) => void;
+  addresses: AddressObj[];
+  balances: BalanceObj
+}
+
+export default function CoinTable(props: Props): JSX.Element {
   return (
-    <STableContainer component={Paper}>
+    <STableContainer>
       <Table aria-label="coin table">
         <TableHead>
           <TableRow>
@@ -74,7 +83,6 @@ export default function CoinTable(props) {
               >
                 <SIconButton
                   aria-label="remove address" 
-                  component="span"
                   onClick={()=>{props.removeAddress(row.uuid)}}
                 >
                   <DeleteForeverIcon />
