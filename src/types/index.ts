@@ -1,5 +1,5 @@
 // Application
-export type Mode = "light" | "dark";
+export type Theme = "light" | "dark";
 
 // Web3
 const coin = ["ETH", "LINK", "USDT", "DAI"] as const;

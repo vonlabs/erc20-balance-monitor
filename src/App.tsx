@@ -24,7 +24,7 @@ import {
   Address,
   Coin,
   Uuid,
-  Mode,
+  Theme,
   AddressObj,
   NewAddressObj,
   BalanceObj,
@@ -37,7 +37,6 @@ const AppContainer = styled.div`
   width: 100vw;
   padding-top: 64px;
   &.dark-mode {
-    // background-color: rgb(13, 23, 34);
     background-color: rgb(30, 30, 30);
   }
 `;
@@ -46,15 +45,24 @@ const SToolbar = styled(Toolbar)`
   justify-content: space-between;
 `;
 
-const getFromLocalStorage = localStorage.addresses
+// LocalStorage
+const getAddressesFromLocalStorage = localStorage.addresses
   ? JSON.parse(localStorage.addresses)
   : [];
+
+const getThemeFromLocalStorage = localStorage.theme
+  ? localStorage.theme
+  : "dark";
+
+// Consts
 const REFRESH_INTERVAL = 20; //secons
 
 function App(): JSX.Element {
-  const [addresses, setAddresses] = useState<AddressObj[]>(getFromLocalStorage);
+  const [addresses, setAddresses] = useState<AddressObj[]>(
+    getAddressesFromLocalStorage
+  );
   const [balances, setBalances] = useState<BalanceObj>({});
-  const [mode, setMode] = useState<Mode>("dark");
+  const [theme, setTheme] = useState<Theme>(getThemeFromLocalStorage);
 
   useEffect(() => {
     async function updateBalances(addresses: AddressObj[]): Promise<void> {
@@ -76,20 +84,28 @@ function App(): JSX.Element {
   const colorMode = useMemo(
     () => ({
       toggleColorMode: (): void => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        setTheme((prevTheme) => {
+          if (prevTheme === "light") {
+            localStorage.setItem("theme", "dark");
+            return "dark";
+          } else {
+            localStorage.setItem("theme", "light");
+            return "light";
+          }
+        });
       },
     }),
     []
   );
 
-  const theme = useMemo(
+  const themeMui = useMemo(
     () =>
       createTheme({
         palette: {
-          mode,
+          mode: theme,
         },
       }),
-    [mode]
+    [theme]
   );
 
   const addAddress = (input: NewAddressObj): void => {
@@ -119,13 +135,13 @@ function App(): JSX.Element {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppContainer className={`App ${mode}-mode`}>
+    <ThemeProvider theme={themeMui}>
+      <AppContainer className={`App ${theme}-mode`}>
         <AppBar>
           <SToolbar>
             <AddAddress add={addAddress} addresses={addresses} />
             <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-              {theme.palette.mode === "dark" ? (
+              {themeMui.palette.mode === "dark" ? (
                 <WbSunnyIcon />
               ) : (
                 <Brightness4Icon />
