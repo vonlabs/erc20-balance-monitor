@@ -2,7 +2,7 @@
 
 exports[`Table renders correctly empty table 1`] = `
 <div
-  className="MuiTableContainer-root css-b3ber7-MuiTableContainer-root"
+  className="MuiTableContainer-root css-1mpklm2-MuiTableContainer-root"
 >
   <table
     aria-label="coin table"
@@ -55,7 +55,7 @@ exports[`Table renders correctly empty table 1`] = `
 
 exports[`Table renders correctly table with 1 item 1`] = `
 <div
-  className="MuiTableContainer-root css-b3ber7-MuiTableContainer-root"
+  className="MuiTableContainer-root css-1mpklm2-MuiTableContainer-root"
 >
   <table
     aria-label="coin table"
@@ -136,7 +136,11 @@ exports[`Table renders correctly table with 1 item 1`] = `
           >
             Balance: 
           </span>
-          4567
+          <div
+            className="text-overflow"
+          >
+            4567
+          </div>
         </td>
         <td
           aria-sort={null}
@@ -183,7 +187,7 @@ exports[`Table renders correctly table with 1 item 1`] = `
 
 exports[`Table renders correctly table with multiple item 1`] = `
 <div
-  className="MuiTableContainer-root css-b3ber7-MuiTableContainer-root"
+  className="MuiTableContainer-root css-1mpklm2-MuiTableContainer-root"
 >
   <table
     aria-label="coin table"
@@ -264,7 +268,11 @@ exports[`Table renders correctly table with multiple item 1`] = `
           >
             Balance: 
           </span>
-          0123
+          <div
+            className="text-overflow"
+          >
+            0123
+          </div>
         </td>
         <td
           aria-sort={null}
@@ -341,7 +349,11 @@ exports[`Table renders correctly table with multiple item 1`] = `
           >
             Balance: 
           </span>
-          4567
+          <div
+            className="text-overflow"
+          >
+            4567
+          </div>
         </td>
         <td
           aria-sort={null}
@@ -418,7 +430,11 @@ exports[`Table renders correctly table with multiple item 1`] = `
           >
             Balance: 
           </span>
-          8901
+          <div
+            className="text-overflow"
+          >
+            8901
+          </div>
         </td>
         <td
           aria-sort={null}

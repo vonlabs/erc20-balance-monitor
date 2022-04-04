@@ -61,6 +61,11 @@ const STableContainer = styled(TableContainer)`
       font-weight: 700;
       margin-right: 8px;
     }
+    .text-overflow{
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .balance-cell{
       display: flex;
     } 
@@ -103,7 +108,7 @@ export default function CoinTable(props: Props): JSX.Element {
               <TableCell>{row.address}</TableCell>
               <TableCell className="balance-cell">
                 <span className="mobile-label">Balance: </span>
-                {props.balances[row.uuid]}
+                <div className="text-overflow">{props.balances[row.uuid]}</div>
               </TableCell>
               <TableCell align="right" className="remove-btn-cell">
                 <SIconButton
