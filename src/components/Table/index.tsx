@@ -7,7 +7,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 
 // mui icons
@@ -20,9 +19,6 @@ import { CryptoIcon } from '../CryptoCoin';
 import { Uuid, AddressObj, BalanceObj } from '../../types'
 
 const STableContainer = styled(TableContainer)`
-  .MuiTableCell-root {
- //   height: 20px;
-  }
   .bold {
     font-weight: 700;
   }

@@ -26,12 +26,6 @@ import { CryptoIcon } from '../CryptoCoin';
 import { Address, Coin, isCoin, AddressObj, NewAddressObj } from '../../types'
 
 
-const SButton = styled(Button)`
-`
-
-const SDialog = styled(Dialog)`
-`
-
 const STextField = styled(TextField)`
   margin-top: 16px;
 `
@@ -89,18 +83,9 @@ function AddAddress(props: Props): JSX.Element {
     }
   };
 
-  const addHelperText = () => {
-    if (!web3Validated) {
-      return "Token not valid"
-    } else if (!duplicateValidated) {
-      return "Duplicate token already added"
-    }
-    return null
-  } 
-
   return (
     <div className="AddressInput">
-      <SButton
+      <Button
         color="inherit"
         variant="outlined"
         onClick={()=>{
@@ -109,9 +94,9 @@ function AddAddress(props: Props): JSX.Element {
         startIcon={<AddIcon/>}
       >
         Add Address
-      </SButton>
+      </Button>
 
-      <SDialog 
+      <Dialog 
         onClose={handleClose} 
         open={open}
         fullWidth
@@ -169,7 +154,7 @@ function AddAddress(props: Props): JSX.Element {
               </span>
             </Tooltip>
         </DialogActions>
-      </SDialog>
+      </Dialog>
     </div>
   );
 }
